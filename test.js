@@ -20,7 +20,18 @@ function get(url, done) {
 	}, delay));
 }
 
+//Get list of friends
 
+//See if the answer is correct
+function score(){
+
+}
+
+var total_score=0;
+
+//Create hash table for article objects
+//http://stackoverflow.com/questions/1208222/how-to-do-associative-array-hashing-in-javascript
+var article_hash={};
 function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	var frequency = {};
 	var newdiv = document.createElement("DIV");
@@ -55,21 +66,37 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 			var g = 1;
 			$('[role="article"]').each(function(i) {
 				//$(this).attr('id', 'page'+(i+1));
-				if ($(this).find(".cg.ch").length > 0){
+				if ($(this).find("[role=\"presentation\"]").length > 0){
 					console.log("g: " + g);
 					//$(this).find(".cg.ch").append('<div class=\"question'+g+'\">Question ' + g +'</div>');
 					//$(this).after('<div id=\"question'+g+'\"'+" class=\"question\">"+ 'Question ' + g +'</div>');
 					//Append Question
-					$(this).append('<div id=\"question'+g+'\"'+" class=\"question\">"+ 'Question ' + g +'</div>');
+					$(this).append('<div id=\"question'+g+'\"'+" class=\"question\">"+ 
+						'Question '
+					 + g +
+					 "<form><input type=\"radio\" name=\"choice\" value=\"Name 1\"> Name 1<input type=\"radio\" name=\"choice\" value=\"Name 2\"> Name 2<input type= \"radio\" name=\"Name 3\" value=\"Application\"> Name 3<input type=\"radio\" name=\"choice\" value=\"None of These\"> Name 4</form>"
+					 +'</div>'+"<br>");
 					
 					//Block Out Name
 					$(this).find("span:first").css('background-color', 'red');
 					$(this).find("span:first").text("GUESS!");
 
+					//Get URL and store it to specific 
+					url = ;
+
+					//Run script for checking if answer is correct
+					if(score()===true){
+						total_score++;
+					}
+
 					g++;
 				}
 				
 			});
+
+			//TODO: ADD FORM OF QUESTION
+			//Filter out videos with youtube and vimeo links
+			//
 			/*
 			htmlstuff.forEach(function (html) {
 				if (!frequency.hasOwnProperty(html)) frequency[html] = 0;
