@@ -82,12 +82,14 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					$(this).find("span:first").text("GUESS!");
 
 					//Get URL and store it to specific 
-					url = ;
+					//url = ;
 
 					//Run script for checking if answer is correct
+					/*
 					if(score()===true){
 						total_score++;
 					}
+					*/
 
 					g++;
 				}
