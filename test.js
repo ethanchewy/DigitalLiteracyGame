@@ -1,3 +1,5 @@
+//Based off of parse.js from politecho
+
 var lastRequestTime = 0;
 var requestInterval = 50;
 
@@ -20,7 +22,28 @@ function get(url, done) {
 	}, delay));
 }
 
-//Get list of friends
+//Get list of friends based on the most frequent posters on news feed
+function getFriends(){
+	$.ajax({
+	     url: "https://mbasic.facebook.com/me/friends",
+	     dataType: 'text',
+	     success: function(data) {
+	          //var elements = $("<div>").html(data)[0].getElementsByTagName("bu")[0].getElementsByTagName("bz");
+	          var elements = $(data).find(".bz.ca").children();
+	          
+	          for(var i = 0; i < elements.length; i++) {
+	               var name = elements[i].firstChild.innerText;
+	               var firstDigit = name.match(/\d/);
+	               index = name.indexOf(firstDigit);
+	               name = name.slice(0, index);
+	               // Do something here
+	               console.log(name);
+	          }
+
+	          console.log(elements);
+	     }
+	});
+}
 
 //See if the answer is correct
 function score(){
@@ -28,6 +51,11 @@ function score(){
 }
 
 var total_score=0;
+
+//Create a way to show mainly friend's contact
+
+
+
 
 //Create hash table for article objects
 //http://stackoverflow.com/questions/1208222/how-to-do-associative-array-hashing-in-javascript
@@ -38,8 +66,10 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	url = document.location.href;
 	console.log(document.location.href);
 	//document.write("sdfsdfsdfdfs");
+	/*
 	document.body.append("<div>sdfsdfsdfdf</div>");
 	$(".cb .cc").text("TESTTESTTEST");
+	*/
 
 	//document.write("sddfdssdfsd");
 	console.log("HELLO_1");
@@ -79,8 +109,43 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					
 					//Block Out Name
 					$(this).find("span:first").css('background-color', 'red');
-					$(this).find("span:first").text("GUESS!");
+					//$(this).find("span:first").text("GUESS!");
+					/*
+					var me = $(this).find("span:first");
+					me.html(me.html().replace(/^(\w+)/, '<span>test</span>'));
+					*/
+					/*
+					var me = $(this).find("span:first");
+					$(me).html(function (i, html) {
+					    return html.replace(/(\w+\s\w+)/, 'TEST');
+					});
+					*/
+					var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
+					var str = $(this).find("span:first").text();
+					console.log(str);
+					var m;
+					var rest = str.split(" ");
+					console.log(rest);
 
+					var name = rest.slice(0, 2);
+					name = name.join(" ");
+					console.log(name);
+
+					//ReProgram with a yield statement or a test fail loop
+					if ((m = re.exec(str)) !== null) {
+						if(rest.length>2){
+							rest.splice(0, 2);
+							$(this).find("span:first").text("Who Is This " + rest.join(" "));
+						} else{
+							$(this).find("span:first").text("Who Is This");
+						}
+					    
+					}
+
+					//Block out profile photo + hovering function
+					//Replace hoverin over with question or somethin
+
+					
 					//Get URL and store it to specific 
 					//url = ;
 
@@ -98,7 +163,12 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 			//TODO: ADD FORM OF QUESTION
 			//Filter out videos with youtube and vimeo links
-			//
+			//Filter out news content to display
+			//Change questions as well
+			//Look at extension code for sponsored posts to avoid marking those up. 
+			//Filter out photos posted => c=any class similarity?
+
+
 			/*
 			htmlstuff.forEach(function (html) {
 				if (!frequency.hasOwnProperty(html)) frequency[html] = 0;
@@ -153,7 +223,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 }
 
 $( document ).ready(function() {
-	console.log("sdf");
+	getFriends();
+
+	//console.log("sdf");
 	var maxNewsFeedDepth = 20;
 	var profileToFrequency;
 	//document.body.append("<div>sdfsdfsdfdf</div>");
@@ -178,6 +250,8 @@ $( document ).ready(function() {
 			},
 		});
 	});
+
+
 });
 /*
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {

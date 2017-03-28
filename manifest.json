@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "js": ["jquery-3.1.1.min.js","test.js"],
-      "matches": [ "http://*/*", "https://*/*" ] ,
+      "matches": [ "*://*.facebook.com/*", "*://*.mbasic.facebook.com/*" ] ,
       "css": ["css/custom_style.css"]    
     }
   ],
