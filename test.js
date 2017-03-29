@@ -88,10 +88,11 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 function fetch(url, depth, friends_list, fetchDone) {
 		//console.log('getNewsFeedFrequency.fetch', depth);
 		//Get the three friends that will be inserted to the questions
-		
-		console.log(friends_list);
-		
+
+
+
 		get(url, function (text) {
+			
 			var $t = $(text);
 
 			//Get any link that contains an article witha preview window
@@ -106,15 +107,13 @@ function fetch(url, depth, friends_list, fetchDone) {
 			//See if each article contains a link or not
 			$('[role="article"]').each(function(i) {
 				//$(this).attr('id', 'page'+(i+1));
+				
+				//Get random subset of friends
+				var friends = getRandomSubarray(friends_list, 3);
+				console.log(friends);
+
 				if ($(this).find("[role=\"presentation\"]").length > 0){
 
-					//Append Question
-					$(this).append('<div id=\"question'+g+'\"'+" class=\"question\">"+ 
-						'Question '
-					 + g +
-					 "<form><input type=\"radio\" name=\"choice\" value=\"Name 1\"> Name 1<input type=\"radio\" name=\"choice\" value=\"Name 2\"> Name 2<input type= \"radio\" name=\"Name 3\" value=\"Application\"> Name 3<input type=\"radio\" name=\"choice\" value=\"None of These\"> Name 4</form>"
-					 +'</div>'+"<br>");
-					
 					//Block Out Name
 					$(this).find("span:first").css('background-color', 'red');
 
@@ -138,6 +137,26 @@ function fetch(url, depth, friends_list, fetchDone) {
 							$(this).find("span:first").text("Who Is This?");
 						}
 					}
+
+					//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
+					var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+
+					friends.splice(location, 0, name);
+
+
+					console.log(friends);
+
+					//Append Question
+					$(this).append('<div id=\"question'+g+'\"'+" class=\"question\">"+ 
+						'Question '
+					 + g +
+					 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
+					 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
+					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
+					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
+					 "</form>"
+					 +'</div>'+"<br>");
+					//STILL NEED TO ADD REAL NAME IN RANDOM LOCATION
 
 					//Block out profile photo + hovering function
 					//Replace hoverin over with question or somethin
@@ -183,10 +202,13 @@ function fetch(url, depth, friends_list, fetchDone) {
 	friends = getFriends();
 
 	//http://stackoverflow.com/a/20291749/4698963
+	var i =0;
 	$.when.apply(null, promises).done(function(){
-		var questions_friends = getRandomSubarray(friends, 3);
-		fetch(url, maxDepth, questions_friends, function () {
+		
+		
+		fetch(url, maxDepth, friends, function () {
 			done(frequency);
+			
 		});
 	});
 	
