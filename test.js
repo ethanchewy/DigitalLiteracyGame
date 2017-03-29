@@ -75,6 +75,7 @@ function getRandomSubarray(arr, size) {
 }
 
 
+
 //Create hash table for article objects
 //http://stackoverflow.com/questions/1208222/how-to-do-associative-array-hashing-in-javascript
 var article_hash={};
@@ -85,7 +86,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	//console.log(document.location.href);
 	//console.log("HELLO_1");
 
-function fetch(url, depth, friends_list, fetchDone) {
+	function fetch(url, depth, friends_list, fetchDone) {
 		//console.log('getNewsFeedFrequency.fetch', depth);
 		//Get the three friends that will be inserted to the questions
 
@@ -107,7 +108,7 @@ function fetch(url, depth, friends_list, fetchDone) {
 			//See if each article contains a link or not
 			$('[role="article"]').each(function(i) {
 				//$(this).attr('id', 'page'+(i+1));
-				
+
 				//Get random subset of friends
 				var friends = getRandomSubarray(friends_list, 3);
 				console.log(friends);
@@ -117,18 +118,18 @@ function fetch(url, depth, friends_list, fetchDone) {
 					//Block Out Name
 					$(this).find("span:first").css('background-color', 'red');
 
+					//Get first two words from string
 					var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
 					var str = $(this).find("span:first").text();
-					//console.log(str);
 					var m;
 					var rest = str.split(" ");
-					//console.log(rest);
+
 
 					var name = rest.slice(0, 2);
 					name = name.join(" ");
-					//console.log(name);
 
 					//ReProgram with a yield statement or a test fail loop
+					//For shared articles stuff
 					if ((m = re.exec(str)) !== null) {
 						if(rest.length>2){
 							rest.splice(0, 2);
@@ -146,16 +147,38 @@ function fetch(url, depth, friends_list, fetchDone) {
 
 					console.log(friends);
 
+
 					//Append Question
-					$(this).append('<div id=\"question'+g+'\"'+" class=\"question\">"+ 
+					$(this).append('<div id='+g+" class=\"question\">"+ 
 						'Question '
 					 + g +
 					 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
 					 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
 					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
 					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
-					 "</form>"
-					 +'</div>'+"<br>");
+					 "</form>" +
+					 "<button class=\"submit\">"+ "Submit" +"</button>" 
+					 +'</div>'+"<br>"
+
+					 );
+
+					$(".submit").click(function(){
+						var number =$(this).parent().attr('id');
+						var choice = $('#' + number + ' input[name=choice]:checked').val();
+						console.log(choice);
+						console.log(name);
+						if(choice===name){
+							alert("Correct!");
+						} else if(choice!==name){
+							alert("Incorect!");
+						}
+
+					});				
+
+					//Test if answer is correct
+
+
+
 					//STILL NEED TO ADD REAL NAME IN RANDOM LOCATION
 
 					//Block out profile photo + hovering function
