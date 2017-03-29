@@ -149,7 +149,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 
 					//Append Question
-					$(this).append('<div id='+g+" class=\"question\">"+ 
+					$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
 						'Question '
 					 + g +
 					 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
@@ -161,19 +161,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					 +'</div>'+"<br>"
 
 					 );
+					
 
-					$(".submit").click(function(){
-						var number =$(this).parent().attr('id');
-						var choice = $('#' + number + ' input[name=choice]:checked').val();
-						console.log(choice);
-						console.log(name);
-						if(choice===name){
-							alert("Correct!");
-						} else if(choice!==name){
-							alert("Incorect!");
-						}
-
-					});				
+							
 
 					//Test if answer is correct
 
@@ -197,8 +187,31 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 					g++;
 				}
+
 				
 			});
+			$(".submit").click(function(e){
+						//Naive definetly hackable
+						e.preventDefault();
+						var number =$(this).parent().attr('id');
+						var correct =$(this).parent().attr('class');
+						var choice = $('#' + number + ' input[name=choice]:checked').val();
+						console.log(choice);
+						console.log(correct);
+						console.log(number);
+						if($(this).parent().attr('id')==number){
+							if(choice===correct){
+								alert("Correct!");
+							} else if(choice!==correct){
+								alert("Incorect!");
+							}
+
+						}
+						
+						console.log("hi");
+						
+
+					});	
 
 			//TODO: ADD FORM OF QUESTION
 			//Filter out videos with youtube and vimeo links
