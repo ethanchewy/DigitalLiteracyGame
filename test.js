@@ -238,7 +238,6 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 //Click event to check if the answer is correct
 //http://stackoverflow.com/a/6658774/4698963
 $(document).on('click', '.submit', function() {
-	console.log("submit action");
 	//e.preventDefault();
 	var number =$(this).parent().attr('id');
 	var correct =$(this).parent().attr('class');
@@ -254,9 +253,10 @@ $(document).on('click', '.submit', function() {
 		}
 
 	}
-	
-	console.log("hi");
 });
+
+
+
 
 $( document ).ready(function() {
 	//var friends = getFriends();
@@ -278,6 +278,80 @@ $( document ).ready(function() {
 		//onReturn();
 	},  function (elapsed, total) {
 		//console.log('Progress: ' + elapsed + '/' + total);
+		//Timing function for each question
+		//Need to make scalable => push to array everytime question is created
+		//This is just for temprorary reasons
+		//Take information from callback
+		$.screentime({
+		  fields: [
+		    { selector: '#1',
+		      name: '1'
+		    },
+		    { selector: '#2',
+		      name: '2'
+		    },
+		    { selector: '#3',
+		      name: '3'
+		    },
+		    { selector: '#4',
+		      name: '4'
+		    },
+		    { selector: '#5',
+		      name: '5'
+		    },
+		    { selector: '#6',
+		      name: '6'
+		    },
+		    { selector: '#7',
+		      name: '7'
+		    },
+		    { selector: '#8',
+		      name: '8'
+		    },
+		    { selector: '#9',
+		      name: '9'
+		    },
+		    { selector: '#10',
+		      name: '10'
+		    },
+		    { selector: '#11',
+		      name: '11'
+		    },
+		    { selector: '#12',
+		      name: '12'
+		    },
+		    { selector: '#13',
+		      name: '13'
+		    },
+		    { selector: '#14',
+		      name: '14'
+		    },
+		    { selector: '#15',
+		      name: '15'
+		    },
+		    { selector: '#16',
+		      name: '16'
+		    },
+		    { selector: '#17',
+		      name: '17'
+		    },
+		    { selector: '#18',
+		      name: '18'
+		    },
+		    { selector: '#19',
+		      name: '19'
+		    },
+		    { selector: '#20',
+		      name: '20'
+		    },
+		    
+		  ],
+		  reportInterval:10,
+		  callback: function(data) {
+		    console.log(data);
+		    // Example { Top: 5, Middle: 3 }
+		  }
+		});
 		chrome.runtime.sendMessage({
 			action: "parseProgress",
 			data: {
@@ -286,6 +360,8 @@ $( document ).ready(function() {
 			},
 		});
 	});
+	//console.log("hji");
+	
 	
 
 
