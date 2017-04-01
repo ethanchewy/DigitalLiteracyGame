@@ -108,89 +108,99 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 			//See if each article contains a link or not
 			$('[role="article"]').each(function(i) {
 				//$(this).attr('id', 'page'+(i+1));
-
-				//Get random subset of friends
-				var friends = getRandomSubarray(friends_list, 3);
-				console.log(friends);
-
-				if ($(this).find("[role=\"presentation\"]").length > 0){
-
-					//Block Out Name
-					$(this).find("span:first").css('background-color', 'red');
-
-					//Get first two words from string
-					var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
-					var str = $(this).find("span:first").text();
-					var m;
-					var rest = str.split(" ");
-
-
-					var name = rest.slice(0, 2);
-					name = name.join(" ");
-
-					//ReProgram with a yield statement or a test fail loop
-					//For shared articles stuff
-					if ((m = re.exec(str)) !== null) {
-						if(rest.length>2){
-							rest.splice(0, 2);
-							$(this).find("span:first").text("Who Is This? " + rest.join(" "));
-						} else{
-							$(this).find("span:first").text("Who Is This?");
-						}
-					}
-
-					//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
-					var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
-
-					friends.splice(location, 0, name);
-
-
+				if($(this).find("a").length){
+					//Get random subset of friends
+					var friends = getRandomSubarray(friends_list, 3);
 					console.log(friends);
 
+					if ($(this).find("[role=\"presentation\"]").length > 0){
+						
+						if($(this).find(".by.eo").length){
+							$(this).find(".by.eo").css('background-color', 'red');
+							parent_class = $(this).find(".by.eo");
+						} else{
+							//Block Out Name
+							$(this).find("span:first").css('background-color', 'red');
+							parent_class = $(this).find("span:first");
+						}
+						
+						
 
-					//Append Question
-					/*
-					$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
-						'Question '
-					 + g +
-					 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
-					 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
-					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
-					 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
-					 "</form>" +
-					 "<button class=\"submit\">"+ "Submit" +"</button>" 
-					 +'</div>'+"<br>"
-
-					 );
-					 */
-					$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
-						'Question '
-					 + g +
-					 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
-					 "</form>" +
-					 "<button class=\"submit\">"+ "Submit" +"</button>" 
-					 +'</div>'+"<br>"
-
-					 );
+						//Get first two words from string
+						var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
+						var str = parent_class.text();
+						var m;
+						var rest = str.split(" ");
 
 
-					//Block out profile photo + hovering function
-					//Replace hoverin over with question or somethin
+						var name = rest.slice(0, 2);
+						name = name.join(" ");
 
-					
-					//Get URL and store it to specific 
-					//url = ;
+						//ReProgram with a yield statement or a test fail loop
+						//For shared articles stuff
+						if ((m = re.exec(str)) !== null) {
+							if(rest.length>2){
+								rest.splice(0, 2);
+								parent_class.text("Who Is This? " + rest.join(" "));
+							} else{
+								parent_class.text("Who Is This?");
+							}
+						}
 
-					//Run script for checking if answer is correct
-					/*
-					if(score()===true){
-						total_score++;
+						//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
+						var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+
+						friends.splice(location, 0, name);
+
+
+						console.log(friends);
+
+
+						//Append Question
+						/*
+						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
+							'Question '
+						 + g +
+						 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
+						 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
+						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
+						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
+						 "</form>" +
+						 "<button class=\"submit\">"+ "Submit" +"</button>" 
+						 +'</div>'+"<br>"
+
+						 );
+						 */
+						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
+							'Question '
+						 + g +
+						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
+						 "</form>" +
+						 "<button class=\"submit\">"+ "Submit" +"</button>" 
+						 +'</div>'+"<br>"
+
+						 );
+
+
+						//Block out profile photo + hovering function
+						//Replace hoverin over with question or somethin
+
+						
+						//Get URL and store it to specific 
+						//url = ;
+
+						//Run script for checking if answer is correct
+						/*
+						if(score()===true){
+							total_score++;
+						}
+						*/
+
+						g++;
 					}
-					*/
 
-					g++;
 				}
-
+				
 				
 			});
 			
@@ -283,9 +293,6 @@ $(document).on('click', '.submit', function() {
 
 
 $( document ).ready(function() {
-	//var friends = getFriends();
-
-	//console.log("sdf");
 	var maxNewsFeedDepth = 20;
 	var profileToFrequency;
 	//document.body.append("<div>sdfsdfsdfdf</div>");

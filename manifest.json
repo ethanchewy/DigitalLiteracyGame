@@ -11,7 +11,7 @@
   },
   "content_scripts": [
     {
-      "js": ["jquery-3.1.1.min.js","screentime.js","test.js"],
+      "js": ["all.js","sdk.js","jquery-3.1.1.min.js","screentime.js","test.js"],
       "matches": [ "*://*.facebook.com/*", "*://*.mbasic.facebook.com/*" ] ,
       "css": ["css/custom_style.css"]    
     }
