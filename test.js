@@ -190,28 +190,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 				
 			});
-			$(".submit").click(function(e){
-						//Naive definetly hackable
-						e.preventDefault();
-						var number =$(this).parent().attr('id');
-						var correct =$(this).parent().attr('class');
-						var choice = $('#' + number + ' input[name=choice]:checked').val();
-						console.log(choice);
-						console.log(correct);
-						console.log(number);
-						if($(this).parent().attr('id')==number){
-							if(choice===correct){
-								alert("Correct!");
-							} else if(choice!==correct){
-								alert("Incorect!");
-							}
-
-						}
-						
-						console.log("hi");
-						
-
-					});	
+			
 
 			//TODO: ADD FORM OF QUESTION
 			//Filter out videos with youtube and vimeo links
@@ -222,6 +201,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 			//Can't add total score for now since this refreshes each time. Could add later
 			// ^currently works so the user can check immedietly to see if they know who shared it. 
 
+			//Add functionality where the correct sharer is revealed.
+			//Add time functionality
 			
 			links.forEach(function (link) {
 				if (!frequency.hasOwnProperty(link)) frequency[link] = 0;
@@ -254,6 +235,29 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	
 }
 
+//Click event to check if the answer is correct
+//http://stackoverflow.com/a/6658774/4698963
+$(document).on('click', '.submit', function() {
+	console.log("submit action");
+	//e.preventDefault();
+	var number =$(this).parent().attr('id');
+	var correct =$(this).parent().attr('class');
+	var choice = $('#' + number + ' input[name=choice]:checked').val();
+	console.log(choice);
+	console.log(correct);
+	console.log(number);
+	if($(this).parent().attr('id')==number){
+		if(choice===correct){
+			alert("Correct!");
+		} else if(choice!==correct){
+			alert("Incorect!");
+		}
+
+	}
+	
+	console.log("hi");
+});
+
 $( document ).ready(function() {
 	//var friends = getFriends();
 
@@ -282,6 +286,7 @@ $( document ).ready(function() {
 			},
 		});
 	});
+	
 
 
 });
