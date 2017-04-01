@@ -149,6 +149,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 
 					//Append Question
+					/*
 					$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
 						'Question '
 					 + g +
@@ -161,15 +162,17 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					 +'</div>'+"<br>"
 
 					 );
-					
+					 */
+					$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
+						'Question '
+					 + g +
+					 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
+					 "</form>" +
+					 "<button class=\"submit\">"+ "Submit" +"</button>" 
+					 +'</div>'+"<br>"
 
-							
+					 );
 
-					//Test if answer is correct
-
-
-
-					//STILL NEED TO ADD REAL NAME IN RANDOM LOCATION
 
 					//Block out profile photo + hovering function
 					//Replace hoverin over with question or somethin
@@ -237,6 +240,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 //Click event to check if the answer is correct
 //http://stackoverflow.com/a/6658774/4698963
+/*
 $(document).on('click', '.submit', function() {
 	//e.preventDefault();
 	var number =$(this).parent().attr('id');
@@ -254,7 +258,27 @@ $(document).on('click', '.submit', function() {
 
 	}
 });
+*/
+$(document).on('click', '.submit', function() {
+	//e.preventDefault();
+	var number =$(this).parent().attr('id');
+	var correct =$(this).parent().attr('class').toLowerCase();
+	//var choice = $('#' + number + ' input[name=choice]:checked').val();
+	//http://stackoverflow.com/a/588322/4698963
+	var choice = $('#' + number + ' input[name=choice]').val();
 
+	console.log(choice);
+	console.log(correct);
+	console.log(number);
+	if($(this).parent().attr('id')==number){
+		if(choice===correct){
+			alert("Correct!");
+		} else if(choice!==correct){
+			alert("Incorect!");
+		}
+
+	}
+});
 
 
 
