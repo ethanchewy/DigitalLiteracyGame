@@ -117,14 +117,14 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					if ($(this).find("[role=\"presentation\"]").length > 0){
 
 						if($(this).find(".by.eo").length){
-							$(this).find(".by.eo").css('background-color', 'red');
+							$(this).find(".by.eo").css('background-color', 'white');
+                			$(this).find(".by.eo").css('color', '#3b5998');
 							parent_class = $(this).find(".by.eo");
 						} else{
 							//Block Out Name
-							$(this).find("span:first").css('background-color', 'red');
+							$(this).find("span:first").css('background-color', 'white');
 							parent_class = $(this).find("span:first");
 						}
-						
 						
 
 						//Get first two words from string
@@ -142,9 +142,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						if ((m = re.exec(str)) !== null) {
 							if(rest.length>2){
 								rest.splice(0, 2);
-								parent_class.text("Who Is This? " + rest.join(" "));
+								parent_class.text("Question " + g + ": Who Is This? " + rest.join(" "));
 							} else{
-								parent_class.text("Who Is This?");
+								parent_class.text("Question " + g + ": Who Is This?");
 							}
 						}
 
@@ -435,7 +435,10 @@ $( document ).ready(function() {
 		});
 	});
 	//console.log("hji");
-	
+
+						$("body").find("#console:first").append(
+							"Time Elapsed:"
+							);
 	
 
 
