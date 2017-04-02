@@ -298,6 +298,14 @@ $(document).on('click', '.submit', function() {
 $( document ).ready(function() {
 	//getFriends();
 	//getFriends();
+	var $div = $("<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>").appendTo('body');
+
+	/*
+	document.getElementsByTagName('body')[0].append(
+		"<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>"
+		);
+		*/
+	document.getElementById("hideAll").style.display = "block";
 	var maxNewsFeedDepth = 20;
 	var profileToFrequency;
 	//document.body.append("<div>sdfsdfsdfdf</div>");
@@ -305,11 +313,13 @@ $( document ).ready(function() {
 	getNewsFeedFrequency(maxNewsFeedDepth, function (data, progress) {
 		//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
 		//chrome.extension.getBackgroundPage().console.log(data);
+		document.getElementById("hideAll").style.display = "none";
 		chrome.runtime.sendMessage({
 			action: "parseResponse",
 			data: data,
 			tab: sender.tab.id
 		});
+		
 		//profileToFrequency = data;
 		//onReturn();
 	},  function (elapsed, total) {
