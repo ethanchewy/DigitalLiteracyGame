@@ -178,7 +178,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
 						 "</form>" +
 						 "<button class=\"submit\">"+ "Submit" +"</button>" 
-						 +'</div>'+"<br>"
+						 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
+						 '</div>'+"<br>"
 
 						 );
 
@@ -186,6 +187,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
 
 							);
+
+
 
 
 
@@ -298,6 +301,15 @@ $(document).on('click', '.submit', function() {
 		}
 
 	}
+});
+
+$(document).on('click', '.reveal', function() {
+	//e.preventDefault();
+	var number =$(this).parent().attr('id');
+	var correct =$(this).parent().attr('class');
+	//var choice = $('#' + number + ' input[name=choice]:checked').val();
+	//http://stackoverflow.com/a/588322/4698963
+	alert("The person who shared/posted this is " + correct);
 });
 
 
