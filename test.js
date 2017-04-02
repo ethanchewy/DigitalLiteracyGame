@@ -172,7 +172,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 						 );
 						 */
-						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
+						$(this).append('<div id='+g+" class=" + "\"" + "question" +"\""+">"+ 
 							'Question '
 						 + g +
 						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
