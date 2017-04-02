@@ -112,7 +112,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 				if($(this).find("a").length){
 					//Get random subset of friends
 					var friends = getRandomSubarray(friends_list, 3);
-					console.log(friends);
+					//console.log(friends);
 
 					if ($(this).find("[role=\"presentation\"]").length > 0){
 
@@ -154,7 +154,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						friends.splice(location, 0, name);
 
 
-						console.log(friends);
+						//console.log(friends);
 
 
 						//Append Question
@@ -181,6 +181,13 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						 +'</div>'+"<br>"
 
 						 );
+
+						$("body").find("#console:first").append(
+							"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
+
+							);
+
+
 
 
 						//Block out profile photo + hovering function
@@ -300,6 +307,7 @@ $( document ).ready(function() {
 	//getFriends();
 	var $div = $("<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>").appendTo('body');
 
+	$("<div id=\"console\"></div>").appendTo(".g:first");
 	/*
 	document.getElementsByTagName('body')[0].append(
 		"<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>"
@@ -314,20 +322,6 @@ $( document ).ready(function() {
 		//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
 		//chrome.extension.getBackgroundPage().console.log(data);
 		document.getElementById("hideAll").style.display = "none";
-		chrome.runtime.sendMessage({
-			action: "parseResponse",
-			data: data,
-			tab: sender.tab.id
-		});
-		
-		//profileToFrequency = data;
-		//onReturn();
-	},  function (elapsed, total) {
-		//console.log('Progress: ' + elapsed + '/' + total);
-		//Timing function for each question
-		//Need to make scalable => push to array everytime question is created
-		//This is just for temprorary reasons
-		//Take information from callback
 		$.screentime({
 		  fields: [
 		    { selector: '#1',
@@ -392,12 +386,34 @@ $( document ).ready(function() {
 		    },
 		    
 		  ],
-		  reportInterval:10,
+		  reportInterval:1,
 		  callback: function(data) {
-		    console.log(data);
 		    // Example { Top: 5, Middle: 3 }
+		    $.each(data, function(key, val) {
+		      var $elem = $('#console li[data-field="' + key + '"]');
+		      var current = parseInt($elem.data('time'), 10);
+
+		      $elem.data('time', current + val);
+		      $elem.find('span').html(current += val);
+		    });
+
 		  }
 		});
+		chrome.runtime.sendMessage({
+			action: "parseResponse",
+			data: data,
+			tab: sender.tab.id
+		});
+		
+		//profileToFrequency = data;
+		//onReturn();
+	},  function (elapsed, total) {
+		//console.log('Progress: ' + elapsed + '/' + total);
+		//Timing function for each question
+		//Need to make scalable => push to array everytime question is created
+		//This is just for temprorary reasons
+		//Take information from callback
+		
 		chrome.runtime.sendMessage({
 			action: "parseProgress",
 			data: {
