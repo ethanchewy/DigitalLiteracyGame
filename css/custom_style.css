@@ -4,6 +4,10 @@ p{
     padding-right: 2%;
 }
 
+.f{
+    width: 95%;
+}
+
 #console{
     left: 0;
     top: 0;
@@ -47,9 +51,17 @@ p{
  }
 */
 
+.cu, .cv, .cw{
+    padding: 2%;
+}
+
 .cu, .cv, .cw, .ct{
     padding-left: 2%;
     padding-right: 2%;
+}
+
+.cr, .cs, .ct{
+        width: 110%;
 }
 
 /*
