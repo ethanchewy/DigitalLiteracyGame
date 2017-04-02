@@ -52,6 +52,7 @@ function getFriends(){
 
 }
 
+
 //See if the answer is correct
 function score(){
 
@@ -114,7 +115,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					console.log(friends);
 
 					if ($(this).find("[role=\"presentation\"]").length > 0){
-						
+
 						if($(this).find(".by.eo").length){
 							$(this).find(".by.eo").css('background-color', 'red');
 							parent_class = $(this).find(".by.eo");
@@ -230,8 +231,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 	//Get random sort of 3 friends
 	friends = getFriends();
-
+	//friends = ["ethan chiu","asdfasdf asdfasdfad", "asdfsdfsd", "Asdfsdfad sdf", "asdf sdfsdf"];
 	//http://stackoverflow.com/a/20291749/4698963
+	
 	var i =0;
 	$.when.apply(null, promises).done(function(){
 		
@@ -242,6 +244,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 		});
 	});
 	
+
 
 	
 
@@ -293,6 +296,8 @@ $(document).on('click', '.submit', function() {
 
 
 $( document ).ready(function() {
+	//getFriends();
+	//getFriends();
 	var maxNewsFeedDepth = 20;
 	var profileToFrequency;
 	//document.body.append("<div>sdfsdfsdfdf</div>");
