@@ -285,7 +285,7 @@ $(document).on('click', '.submit', function() {
 	var correct =$(this).parent().attr('class').toLowerCase();
 	//var choice = $('#' + number + ' input[name=choice]:checked').val();
 	//http://stackoverflow.com/a/588322/4698963
-	var choice = $('#' + number + ' input[name=choice]').val();
+	var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
 
 	console.log(choice);
 	console.log(correct);
