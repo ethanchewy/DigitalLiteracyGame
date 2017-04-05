@@ -24,6 +24,8 @@ function get(url, done) {
 
 //Get list of friends based on the most frequent posters on news feed
 //Promise to be resolved using deferred objects inside the getnewsfeed function
+//Need to store information in cache. Don't rurn this function everytime the page reloads.
+// https://developer.chrome.com/extensions/storage , http://stackoverflow.com/questions/3937000/chrome-extension-accessing-localstorage-in-content-script 
 var promises = [];
 function getFriends(){
 	var friends = [];
@@ -172,7 +174,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 						 );
 						 */
-						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
+						$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
 							'Question '
 						 + g +
 						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
@@ -227,6 +229,10 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 			//Add functionality where the correct sharer is revealed.
 			//Add time functionality
+
+			//Add classes to question after. 
+
+			//Do you trust this or not? question box with 
 			
 			links.forEach(function (link) {
 				if (!frequency.hasOwnProperty(link)) frequency[link] = 0;
