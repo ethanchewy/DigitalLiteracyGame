@@ -22,39 +22,6 @@ function get(url, done) {
 	}, delay));
 }
 
-//Get list of friends based on the most frequent posters on news feed
-//Promise to be resolved using deferred objects inside the getnewsfeed function
-//Need to store information in cache. Don't rurn this function everytime the page reloads.
-// https://developer.chrome.com/extensions/storage , http://stackoverflow.com/questions/3937000/chrome-extension-accessing-localstorage-in-content-script 
-var promises = [];
-function getFriends(){
-	var friends = [];
-	request = $.ajax({
-	     url: "https://mbasic.facebook.com/me/friends",
-	     dataType: 'text',
-	     success: function(data) {
-	          //var elements = $("<div>").html(data)[0].getElementsByTagName("bu")[0].getElementsByTagName("bz");
-	          var elements = $(data).find(".bz.ca").children();
-	          
-	          for(var i = 0; i < elements.length; i++) {
-	               var name = elements[i].firstChild.innerText;
-	               var firstDigit = name.match(/\d/);
-	               index = name.indexOf(firstDigit);
-	               name = name.slice(0, index);
-	               // Do something here
-	               friends.push(name);
-	          }
-
-	          //console.log(friends);
-	          
-	     }
-	});
-	promises.push( request);
-	return friends;
-
-}
-
-
 //See if the answer is correct
 function score(){
 
@@ -82,14 +49,16 @@ function getRandomSubarray(arr, size) {
 //Create hash table for article objects
 //http://stackoverflow.com/questions/1208222/how-to-do-associative-array-hashing-in-javascript
 var article_hash={};
+
 function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	var frequency = {};
+	//friends = getFriends();
 	var newdiv = document.createElement("DIV");
 	url = document.location.href;
 	//console.log(document.location.href);
 	//console.log("HELLO_1");
 
-	function fetch(url, depth, friends_list, fetchDone) {
+	function fetch(url, depth, fetchDone) {
 		//console.log('getNewsFeedFrequency.fetch', depth);
 		//Get the three friends that will be inserted to the questions
 
@@ -113,7 +82,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 				//$(this).attr('id', 'page'+(i+1));
 				if($(this).find("a").length){
 					//Get random subset of friends
-					var friends = getRandomSubarray(friends_list, 3);
+					//var friends = getRandomSubarray(friends_list, 3);
 					//console.log(friends);
 
 					if ($(this).find("[role=\"presentation\"]").length > 0){
@@ -151,29 +120,11 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						}
 
 						//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
+						/*
 						var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
 
 						friends.splice(location, 0, name);
 
-
-						//console.log(friends);
-
-
-						//Append Question
-						/*
-						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
-							'Question '
-						 + g +
-						 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
-						 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
-						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
-						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
-						 "</form>" +
-						 "<button class=\"submit\">"+ "Submit" +"</button>" 
-						 +'</div>'+"<br>"
-
-						 );
-						 */
 						$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
 							'Question '
 						 + g +
@@ -193,7 +144,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 
 
-
+						*/
 
 						//Block out profile photo + hovering function
 						//Replace hoverin over with question or somethin
@@ -233,6 +184,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 			//Add classes to question after. 
 
 			//Do you trust this or not? question box with 
+
+			//form with checkbox
 			
 			links.forEach(function (link) {
 				if (!frequency.hasOwnProperty(link)) frequency[link] = 0;
@@ -246,18 +199,16 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	}
 
 	//Get random sort of 3 friends
-	friends = getFriends();
+	
 	//friends = ["ethan chiu","asdfasdf asdfasdfad", "asdfsdfsd", "Asdfsdfad sdf", "asdf sdfsdf"];
 	//http://stackoverflow.com/a/20291749/4698963
+
 	
 	var i =0;
-	$.when.apply(null, promises).done(function(){
+
+	fetch(url, maxDepth, function () {
+		done(frequency);
 		
-		
-		fetch(url, maxDepth, friends, function () {
-			done(frequency);
-			
-		});
 	});
 	
 

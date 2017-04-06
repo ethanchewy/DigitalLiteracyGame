@@ -16,5 +16,5 @@
       "css": ["css/custom_style.css"]    
     }
   ],
-  "permissions": ["tabs", "https://*/*", "storage"]
+  "permissions": ["tabs", "https://*/*", "storage", "unlimitedStorage"]
 }
