@@ -15,13 +15,16 @@ var list_of_friends = null;
 
 chrome.storage.local.get(['friends_list'], function(items) {
   //message('Settings retrieved', items);
-  console.log(items);
-  list_of_friends = items;
+  
+  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
+  console.log(list_of_friends);
 });
 
-if(list_of_friends==null){
+/*
+if(list_of_friends===null){
 	alert("Please press the update button in the extension popup window!");
 }
+*/
 
 function get(url, done) {
 	var xhr = new XMLHttpRequest();
@@ -102,22 +105,33 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 					//var friends = getRandomSubarray(friends_list, 3);
 					//console.log(friends);
 
-					if ($(this).find("[role=\"presentation\"]").length > 0){
+					
 
-						if($(this).find(".by.eo").length){
-							$(this).find(".by.eo").css('background-color', 'red');
+					if ($(this).find("[role=\"presentation\"]").length > 0){
+						//Get first two words from string
+						//Shared class is .by.eo
+						//contains_shared = #elementId:contains('some text').length > 0;
+
+						//Check to see if "shared by" is captured by string
+						//console.log($("#elementId:contains('some text')").length);
+						var shared = console.log($(this).first().text().indexOf(" shared a "));
+						
+						/*
+						if($(this).find(".by.eo").length || shared > 0){
+							//$(this).find(".by.eo").css('background-color', 'red');
 							parent_class = $(this).find(".by.eo");
 						} else{
 							//Block Out Name
-							$(this).find("span:first").css('background-color', 'red');
+							//$(this).find("span:first").css('background-color', 'red');
 							parent_class = $(this).find("span:first");
-						}
-						
+						}*/
 						
 
-						//Get first two words from string
+						//parent_class = $(this).find("span:first");
+						var parent_div = $(this).find("a:first");
+
 						var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
-						var str = parent_class.text();
+						var str = parent_div.text();
 						var m;
 						var rest = str.split(" ");
 
@@ -125,16 +139,55 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						var name = rest.slice(0, 2);
 						name = name.join(" ");
 
-						//ReProgram with a yield statement or a test fail loop
-						//For shared articles stuff
-						if ((m = re.exec(str)) !== null) {
-							if(rest.length>2){
-								rest.splice(0, 2);
-								parent_class.text("Who Is This? " + rest.join(" "));
-							} else{
-								parent_class.text("Who Is This?");
+						//console.log(name);
+						//console.log(list_of_friends);
+						console.log(list_of_friends instanceof Array);
+						console.log(list_of_friends[0]);
+						//console.log(list_of_friends["friends_list"]);
+						console.log(name);
+						console.log(list_of_friends[0].indexOf("Lexie Lehmann"));
+
+						if(list_of_friends[0].indexOf(name)){
+							//ReProgram with a yield statement or a test fail loop
+							//For shared articles stuff
+							
+							console.log(parent_div);
+							parent_div.css('background-color', 'red');
+							
+							if ((m = re.exec(str)) !== null) {
+								if(rest.length>2){
+									rest.splice(0, 2);
+									parent_div.text("Who Is This? " + rest.join(" "));
+								} else{
+									parent_div.text("Who Is This?");
+								}
 							}
+
+							$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
+							'Question '
+							 + g +
+							 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
+							 "</form>" +
+							 "<button class=\"submit\">"+ "Submit" +"</button>" 
+							 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
+							 '</div>'+"<br>"
+
+							 );
+
+							$("body").find("#console:first").append(
+								"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
+
+							);
+							
+							g++;
+
 						}
+
+						
+						
+						
+
+						
 
 						//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
 						/*
@@ -177,7 +230,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						}
 						*/
 
-						g++;
+						
 					}
 
 				}
