@@ -114,7 +114,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 						//Check to see if "shared by" is captured by string
 						//console.log($("#elementId:contains('some text')").length);
-						var shared = console.log($(this).first().text().indexOf(" shared a "));
+						var shared = $(this).first().text().indexOf(" shared a ");
 						
 						/*
 						if($(this).find(".by.eo").length || shared > 0){
@@ -125,6 +125,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							//$(this).find("span:first").css('background-color', 'red');
 							parent_class = $(this).find("span:first");
 						}*/
+
+						console.log(shared);
 						
 
 						//parent_class = $(this).find("span:first");
@@ -147,7 +149,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						console.log(name);
 						console.log(list_of_friends[0].indexOf(name));
 
-						if(list_of_friends[0].indexOf(name)>-1){
+						if(list_of_friends[0].indexOf(name)>-1&&shared>-1){
 							//ReProgram with a yield statement or a test fail loop
 							//For shared articles stuff
 							
