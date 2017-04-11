@@ -145,9 +145,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						console.log(list_of_friends[0]);
 						//console.log(list_of_friends["friends_list"]);
 						console.log(name);
-						console.log(list_of_friends[0].indexOf("Lexie Lehmann"));
+						console.log(list_of_friends[0].indexOf(name));
 
-						if(list_of_friends[0].indexOf(name)){
+						if(list_of_friends[0].indexOf(name)>-1){
 							//ReProgram with a yield statement or a test fail loop
 							//For shared articles stuff
 							
@@ -173,6 +173,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							 '</div>'+"<br>"
 
 							 );
+							$(this).append('<br><br><br><br>');
 
 							$("body").find("#console:first").append(
 								"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
