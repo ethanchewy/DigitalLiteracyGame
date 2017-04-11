@@ -97,9 +97,18 @@ function save_data(data){
       //message('Settings saved');
     });
     */
-    localStorage.setItem('friends_list', JSON.stringify(data));
+    //localStorage.setItem('friends_list', JSON.stringify(data));
+    /*
+    localStorage["friends_list"] = data; 
     var myvar = localStorage["friends_list"];
     console.log(myvar);
+    */
+
+    chrome.storage.local.set({'friends_list': data}, function() {
+      console.log('Settings saved');
+      console.log(localStorage["friends_list"]);
+    });
+
     alert("all done updating");
 
 }
@@ -111,7 +120,7 @@ $( document ).ready(function() {
 		var friends_list = getFriends();
 
 		$.when.apply(null, promises).done(function(){
-			localStorage.removeItem("friends_list");
+			//localStorage.removeItem("friends_list");
 			save_data(friends_list);
 		});
 	});

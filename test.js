@@ -5,6 +5,23 @@ var requestInterval = 50;
 
 var timeoutHistory = [];
 var xhrHistory = [];
+/*
+var list_of_friends = localStorage;
+
+console.log("hello");
+console.log(list_of_friends);
+*/
+var list_of_friends = null;
+
+chrome.storage.local.get(['friends_list'], function(items) {
+  //message('Settings retrieved', items);
+  console.log(items);
+  list_of_friends = items;
+});
+
+if(list_of_friends==null){
+	alert("Please press the update button in the extension popup window!");
+}
 
 function get(url, done) {
 	var xhr = new XMLHttpRequest();
