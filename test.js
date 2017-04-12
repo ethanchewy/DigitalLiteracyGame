@@ -5,6 +5,26 @@ var requestInterval = 50;
 
 var timeoutHistory = [];
 var xhrHistory = [];
+/*
+var list_of_friends = localStorage;
+
+console.log("hello");
+console.log(list_of_friends);
+*/
+var list_of_friends = null;
+
+chrome.storage.local.get(['friends_list'], function(items) {
+  //message('Settings retrieved', items);
+  
+  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
+  console.log(list_of_friends);
+});
+
+/*
+if(list_of_friends===null){
+	alert("Please press the update button in the extension popup window!");
+}
+*/
 
 function get(url, done) {
 	var xhr = new XMLHttpRequest();
@@ -21,37 +41,6 @@ function get(url, done) {
 		xhr.send();
 	}, delay));
 }
-
-//Get list of friends based on the most frequent posters on news feed
-//Promise to be resolved using deferred objects inside the getnewsfeed function
-var promises = [];
-function getFriends(){
-	var friends = [];
-	request = $.ajax({
-	     url: "https://mbasic.facebook.com/me/friends",
-	     dataType: 'text',
-	     success: function(data) {
-	          //var elements = $("<div>").html(data)[0].getElementsByTagName("bu")[0].getElementsByTagName("bz");
-	          var elements = $(data).find(".bz.ca").children();
-	          
-	          for(var i = 0; i < elements.length; i++) {
-	               var name = elements[i].firstChild.innerText;
-	               var firstDigit = name.match(/\d/);
-	               index = name.indexOf(firstDigit);
-	               name = name.slice(0, index);
-	               // Do something here
-	               friends.push(name);
-	          }
-
-	          //console.log(friends);
-	          
-	     }
-	});
-	promises.push( request);
-	return friends;
-
-}
-
 
 //See if the answer is correct
 function score(){
@@ -80,14 +69,16 @@ function getRandomSubarray(arr, size) {
 //Create hash table for article objects
 //http://stackoverflow.com/questions/1208222/how-to-do-associative-array-hashing-in-javascript
 var article_hash={};
+
 function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	var frequency = {};
+	//friends = getFriends();
 	var newdiv = document.createElement("DIV");
 	url = document.location.href;
 	//console.log(document.location.href);
 	//console.log("HELLO_1");
 
-	function fetch(url, depth, friends_list, fetchDone) {
+	function fetch(url, depth, fetchDone) {
 		//console.log('getNewsFeedFrequency.fetch', depth);
 		//Get the three friends that will be inserted to the questions
 
@@ -111,25 +102,38 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 				//$(this).attr('id', 'page'+(i+1));
 				if($(this).find("a").length){
 					//Get random subset of friends
-					var friends = getRandomSubarray(friends_list, 3);
+					//var friends = getRandomSubarray(friends_list, 3);
 					//console.log(friends);
 
-					if ($(this).find("[role=\"presentation\"]").length > 0){
+					
 
-						if($(this).find(".by.eo").length){
-							$(this).find(".by.eo").css('background-color', 'white');
-                			$(this).find(".by.eo").css('color', '#3b5998');
+					if ($(this).find("[role=\"presentation\"]").length > 0){
+						//Get first two words from string
+						//Shared class is .by.eo
+						//contains_shared = #elementId:contains('some text').length > 0;
+
+						//Check to see if "shared by" is captured by string
+						//console.log($("#elementId:contains('some text')").length);
+						var shared = $(this).first().text().indexOf(" shared a ");
+						
+						/*
+						if($(this).find(".by.eo").length || shared > 0){
+							//$(this).find(".by.eo").css('background-color', 'red');
 							parent_class = $(this).find(".by.eo");
 						} else{
 							//Block Out Name
-							$(this).find("span:first").css('background-color', 'white');
+							//$(this).find("span:first").css('background-color', 'red');
 							parent_class = $(this).find("span:first");
-						}
+						}*/
+
+						console.log(shared);
 						
 
-						//Get first two words from string
+						//parent_class = $(this).find("span:first");
+						var parent_div = $(this).find("a:first");
+
 						var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
-						var str = parent_class.text();
+						var str = parent_div.text();
 						var m;
 						var rest = str.split(" ");
 
@@ -137,42 +141,64 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						var name = rest.slice(0, 2);
 						name = name.join(" ");
 
-						//ReProgram with a yield statement or a test fail loop
-						//For shared articles stuff
-						if ((m = re.exec(str)) !== null) {
-							if(rest.length>2){
-								rest.splice(0, 2);
-								parent_class.text("Question " + g + ": Who Is This? " + rest.join(" "));
-							} else{
-								parent_class.text("Question " + g + ": Who Is This?");
+						//console.log(name);
+						//console.log(list_of_friends);
+						console.log(list_of_friends instanceof Array);
+						console.log(list_of_friends[0]);
+						//console.log(list_of_friends["friends_list"]);
+						console.log(name);
+						console.log(list_of_friends[0].indexOf(name));
+
+						if(list_of_friends[0].indexOf(name)>-1&&shared>-1){
+							//ReProgram with a yield statement or a test fail loop
+							//For shared articles stuff
+							
+							console.log(parent_div);
+							parent_div.css('background-color', 'red');
+							
+							if ((m = re.exec(str)) !== null) {
+								if(rest.length>2){
+									rest.splice(0, 2);
+									parent_div.text("Who Is This? " + rest.join(" "));
+								} else{
+									parent_div.text("Who Is This?");
+								}
 							}
+
+							$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
+							'Question '
+							 + g +
+							 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
+							 "</form>" +
+							 "<button class=\"submit\">"+ "Submit" +"</button>" 
+							 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
+							 '</div>'+"<br>"
+
+							 );
+							$(this).append('<br><br><br><br>');
+
+							$("body").find("#console:first").append(
+								"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
+
+							);
+							
+							g++;
+
 						}
 
+						
+						
+						
+
+						
+
 						//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
+						/*
 						var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
 
 						friends.splice(location, 0, name);
 
-
-						//console.log(friends);
-
-
-						//Append Question
-						/*
-						$(this).append('<div id='+g+" class=" + "\"" + name +"\""+">"+ 
-							'Question '
-						 + g +
-						 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
-						 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
-						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
-						 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
-						 "</form>" +
-						 "<button class=\"submit\">"+ "Submit" +"</button>" 
-						 +'</div>'+"<br>"
-
-						 );
-						 */
-						$(this).append('<div id='+g+" class=" + "\"" + "question" +"\""+">"+ 
+						$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
 							'Question '
 						 + g +
 						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
@@ -191,7 +217,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 
 
-
+						*/
 
 						//Block out profile photo + hovering function
 						//Replace hoverin over with question or somethin
@@ -207,7 +233,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 						}
 						*/
 
-						g++;
+						
 					}
 
 				}
@@ -227,6 +253,12 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 			//Add functionality where the correct sharer is revealed.
 			//Add time functionality
+
+			//Add classes to question after. 
+
+			//Do you trust this or not? question box with 
+
+			//form with checkbox
 			
 			links.forEach(function (link) {
 				if (!frequency.hasOwnProperty(link)) frequency[link] = 0;
@@ -240,18 +272,16 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 	}
 
 	//Get random sort of 3 friends
-	friends = getFriends();
+	
 	//friends = ["ethan chiu","asdfasdf asdfasdfad", "asdfsdfsd", "Asdfsdfad sdf", "asdf sdfsdf"];
 	//http://stackoverflow.com/a/20291749/4698963
+
 	
 	var i =0;
-	$.when.apply(null, promises).done(function(){
+
+	fetch(url, maxDepth, function () {
+		done(frequency);
 		
-		
-		fetch(url, maxDepth, friends, function () {
-			done(frequency);
-			
-		});
 	});
 	
 
@@ -286,6 +316,12 @@ $(document).on('click', '.submit', function() {
 	//e.preventDefault();
 	var number =$(this).parent().attr('id');
 	var correct =$(this).parent().attr('class').toLowerCase();
+	correct = correct.split(" ");
+	console.log(correct);
+	correct = correct.splice(0, 2);
+	console.log(correct);
+	correct = correct.join(" ");
+	console.log(correct);
 	//var choice = $('#' + number + ' input[name=choice]:checked').val();
 	//http://stackoverflow.com/a/588322/4698963
 	var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
@@ -435,10 +471,7 @@ $( document ).ready(function() {
 		});
 	});
 	//console.log("hji");
-
-						$("body").find("#console:first").append(
-							"Time Elapsed:"
-							);
+	
 	
 
 
