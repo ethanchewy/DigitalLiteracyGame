@@ -11,7 +11,7 @@
     background-color: #3B5998;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 10px;
     text-align:  center;
     text-decoration: none;
     display: inline-block;
@@ -28,22 +28,63 @@
    right: 0px; 
    top: 0px; 
    bottom: 0px; 
-   background-color: white;
-   z-index: 99;  /*Higher than anything else in the document*/
+   z-index: 99; /* Higher than anything else in the document */
+     
  }
 
+#load{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    background-color: #E1E8F0;
+}
+
+#load h1{
+    font-size: 5em;
+     color: #9068BE;
+}
+
+#load h2{
+    font-size: 4em;
+    padding-top: 3%;
+ color: #9068BE;
+}
+
+#ring{
+    padding-top: 3%;
+    width: 100px;
+    display: inline-block
+}
+
+/*Padding starts here, still needs to be fixed*/
 
 .cu, .cv, .cw{
-    padding: 2%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.cu, .cv, .cw, .ct{
-    padding-left: 2%;
-    padding-right: 2%;
+/*instead of 2%, try padding my 20px*/
+.cu, .cv, .ct{
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
-.cr, .cs, .ct{
+/*.cr, .cs, .ct{*/
         width: 110%;
+}
+
+/*
+.dx{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+*/
+
+.dz, .ea, .cw, .dp, .dq{
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 /*

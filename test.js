@@ -165,14 +165,14 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							//For shared articles stuff
 							
 							console.log(parent_div);
-							parent_div.css('background-color', 'red');
+//							parent_div.css('background-color', 'red');
 							
 							if ((m = re.exec(str)) !== null) {
 								if(rest.length>2){
 									rest.splice(0, 2);
-									parent_div.text("Who Is This? " + rest.join(" "));
+									parent_div.text("Question " + g + " : Who Is This? " + rest.join(" "));
 								} else{
-									parent_div.text("Who Is This?");
+									parent_div.text("Question " + g + " : Who Is This?");
 								}
 							}
 
@@ -375,7 +375,10 @@ $(document).on('click', '.reveal', function() {
 $( document ).ready(function() {
 	//getFriends();
 	//getFriends();
-	var $div = $("<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>").appendTo('body');
+	var $div = $('<div style=\"display: none\" id=\"hideAll\">\ <div id="load">\       <h1>Digital Literacy Game</h1>\
+        <h2>DAV Lab</h2>\<div id="ringdiv">\
+        <img id="ring" src="https://lh5.googleusercontent.com/E2yu2kW9oUOSTNAGBq__SentduisaL8QP0gu6OJy03Iw5wLmsz61xu8sVe5-4RxjjEYk26-V17OMO7k=w1037-h632">\
+        </div>\</div>\</div>').appendTo('body');
 
 	$("<div id=\"console\"></div>").appendTo(".g:first");
 	/*
