@@ -75,6 +75,25 @@ function getFriends(){
 
 }
 
+//Provide two different options
+//First option: open answer
+//Second option: multile choice
+function changeOptions(data){
+	console.log(data);
+
+
+	if (!data) {
+      //message('Error: No value specified');
+      return;
+    }
+	
+	chrome.storage.local.set({'game_choice': data}, function() {
+      console.log('Settings saved');
+      //console.log(localStorage["game_choice"]);
+    });
+    //console.log(localStorage["game_choice"]);
+}
+
 //https://developer.chrome.com/extensions/storage#type-StorageArea
 
 //Overid the data limits via http://stackoverflow.com/questions/34060487/chrome-extension-store-large-amounts-of-data
@@ -88,21 +107,6 @@ function save_data(data){
       //message('Error: No value specified');
       return;
     }
-    // Save it using the Chrome extension storage API.
-    /*
-    chrome.storage.sync.set({'friends_list': data}, function() {
-      // Notify that we saved.
-      console.log("hello");
-      console.log(data);
-      //message('Settings saved');
-    });
-    */
-    //localStorage.setItem('friends_list', JSON.stringify(data));
-    /*
-    localStorage["friends_list"] = data; 
-    var myvar = localStorage["friends_list"];
-    console.log(myvar);
-    */
 
     chrome.storage.local.set({'friends_list': data}, function() {
       console.log('Settings saved');
@@ -112,8 +116,42 @@ function save_data(data){
     alert("all done updating");
 
 }
+function reloadWindow(){
+	chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+	    var code = 'window.location.reload();';
+	    chrome.tabs.executeScript(arrayOfTabs[0].id, {code: code});
+	});
+}
 
+var choice="open";
 $( document ).ready(function() {
+	chrome.storage.local.set({'game_choice': "open"}, function() {
+      console.log('Settings saved');
+      console.log(localStorage["game_choice"]);
+    });
+
+    $("[name='my-checkbox']").bootstrapSwitch();
+    $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+	  console.log(state); // true | false
+	  //Temporary code. Need to shorten
+	  var content = this.id;
+	  console.log(content);
+	  
+  		switch(content){
+		  	case "game_choice":
+		  		if(state==true){
+				  	$("#game_choice").show();
+				  	choice = "open";
+				  } else{
+				  	$("#game_choice").hide();
+				  	choice = "multiple";
+				  }
+				changeOptions(choice);
+				reloadWindow();
+		  		break;
+	  	}
+	});
+
     $( "#update" ).click(function() {
 		//console.log("sdf");
 		friends = null;
@@ -122,6 +160,7 @@ $( document ).ready(function() {
 		$.when.apply(null, promises).done(function(){
 			//localStorage.removeItem("friends_list");
 			save_data(friends_list);
+			reloadWindow();
 		});
 	});
 });

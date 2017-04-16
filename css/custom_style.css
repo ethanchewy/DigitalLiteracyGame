@@ -1,25 +1,65 @@
-.question {
-	float:left;
-	color:red;
+
+p{
+    padding-left: 2%;
+    padding-right: 2%;
 }
-#hideAll
- {
+
+.f{
+    width: 95%;
+}
+
+#console{
+    left: 0;
+    top: 0;
+    list-style: none;
+    position: fixed;
+    padding: 2%;
+}
+
+.question {
+    text-align: center;
+    line-height: 200%;
+    margin-top: 2%;
+  padding: 2%;
+}
+
+
+.submit, .reveal{
+    padding-top: 2%;
+    background-color: #3B5998;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align:  center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    margin: 4px 2px;
+    cursor: pointer;
+    
+}
+
+
+#hideAll{
    position: fixed;
    left: 0px; 
    right: 0px; 
    top: 0px; 
    bottom: 0px; 
    background-color: white;
-   z-index: 99; /* Higher than anything else in the document */
-
+   z-index: 99;  /*Higher than anything else in the document*/
  }
-/*
-div[role=article]:first-child{
-	color:green;
-}
-div[role=article]:second-child{
-	color:green;
-}
-*/
 
 
+.cu, .cv, .cw{
+    padding: 2%;
+}
+
+.cu, .cv, .cw, .ct{
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.cr, .cs, .ct{
+        width: 110%;
+}

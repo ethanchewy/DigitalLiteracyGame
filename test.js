@@ -1,10 +1,14 @@
 //Based off of parse.js from politecho
 
+//For Get function
 var lastRequestTime = 0;
 var requestInterval = 50;
 
 var timeoutHistory = [];
 var xhrHistory = [];
+
+//For correct answer time function
+var times_on_posts = [];
 /*
 var list_of_friends = localStorage;
 
@@ -12,12 +16,19 @@ console.log("hello");
 console.log(list_of_friends);
 */
 var list_of_friends = null;
+var game_choice = null;
 
 chrome.storage.local.get(['friends_list'], function(items) {
   //message('Settings retrieved', items);
   
   list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
   console.log(list_of_friends);
+});
+
+chrome.storage.local.get(['game_choice'], function(items) {
+  //message('Settings retrieved', items);
+  game_choice = Object.keys(items).map(function (key) { return items[key]; });
+  console.log(game_choice);
 });
 
 /*
@@ -165,22 +176,49 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 								}
 							}
 
-							$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
-							'Question '
-							 + g +
-							 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
-							 "</form>" +
-							 "<button class=\"submit\">"+ "Submit" +"</button>" 
-							 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
-							 '</div>'+"<br>"
+							if(game_choice[0]=="open"){
+								$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
+								'Question '
+								 + g +
+								 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
+								 "</form>" +
+								 "<button class=\"submit\">"+ "Submit" +"</button>" 
+								 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
+								 '</div>'+"<br>"
 
-							 );
-							$(this).append('<br><br><br><br>');
+								 );
+								$(this).append('<br><br><br><br>');
 
-							$("body").find("#console:first").append(
-								"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
+								$("body").find("#console:first").append(
+									"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
 
-							);
+								);
+							} else {
+								var friends = getRandomSubarray(list_of_friends[0], 3);
+								var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+
+								friends.splice(location, 0, name);
+
+								$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
+								'Question '
+								 + g +
+								 "<form><input type=\"radio\" name=\"choice\" value=\"" + friends[0] +"\""+">"+ friends[0]
+								 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
+								 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
+								 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
+								 "</form>" +
+								  "<button class=\"submit\">"+ "Submit" +"</button>" 
+								 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
+								 '</div>'+"<br>"
+								 +'</div>'+"<br>");
+
+								$("body").find("#console:first").append(
+									"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
+
+									);
+
+							}
+							
 							
 							g++;
 
@@ -319,24 +357,35 @@ $(document).on('click', '.submit', function() {
 	//var choice = $('#' + number + ' input[name=choice]:checked').val();
 	//http://stackoverflow.com/a/588322/4698963
 	correct = correct.split(" ");
-	console.log(correct);
 	correct = correct.splice(0, 2);
-	console.log(correct);
 	correct = correct.join(" ");
-	console.log(correct);
-	var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
 
-	console.log(choice);
-	console.log(correct);
-	console.log(number);
-	if($(this).parent().attr('id')==number){
+	if(game_choice=="multiple"){
+		var choice = $('#' + number + ' input[name=choice]:checked').val().toLowerCase();
+
 		if(choice===correct){
-			alert("Correct!");
+			var correct_time = times_on_posts[number];
+			alert("Correct! Time spent: "+ correct_time + " seconds");
 		} else if(choice!==correct){
 			alert("Incorect!");
 		}
+	} else if(game_choice=="open"){
+		var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
 
+		if($(this).parent().attr('id')==number){
+			if(choice===correct){
+				var correct_time = times_on_posts[number];
+				alert("Correct! Time spent: "+ correct_time + " seconds");
+			} else if(choice!==correct){
+				alert("Incorect!");
+			}
+
+		}
+
+	} else{
+		Alert("error!");
 	}
+	
 });
 
 $(document).on('click', '.reveal', function() {
@@ -366,6 +415,8 @@ $( document ).ready(function() {
 	var profileToFrequency;
 	//document.body.append("<div>sdfsdfsdfdf</div>");
 	//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
+
+
 	getNewsFeedFrequency(maxNewsFeedDepth, function (data, progress) {
 		//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
 		//chrome.extension.getBackgroundPage().console.log(data);
@@ -440,7 +491,7 @@ $( document ).ready(function() {
 		    $.each(data, function(key, val) {
 		      var $elem = $('#console li[data-field="' + key + '"]');
 		      var current = parseInt($elem.data('time'), 10);
-
+		      times_on_posts[key] = current + val;
 		      $elem.data('time', current + val);
 		      $elem.find('span').html(current += val);
 		    });
