@@ -175,6 +175,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 									parent_div.text("Who Is This?");
 								}
 							}
+						}
 
 							if(game_choice[0]=="open"){
 								$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
@@ -357,8 +358,12 @@ $(document).on('click', '.submit', function() {
 	//var choice = $('#' + number + ' input[name=choice]:checked').val();
 	//http://stackoverflow.com/a/588322/4698963
 	correct = correct.split(" ");
+	console.log(correct);
 	correct = correct.splice(0, 2);
+	console.log(correct);
 	correct = correct.join(" ");
+	console.log(correct);
+	var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
 
 	if(game_choice=="multiple"){
 		var choice = $('#' + number + ' input[name=choice]:checked').val().toLowerCase();

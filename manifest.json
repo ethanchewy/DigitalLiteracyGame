@@ -7,7 +7,7 @@
     "default_popup": "popup.html"
   },
   "icons":{
-  	  "128":"icon128t.png"
+      "128":"icon128t.png"
   },
   "content_scripts": [
     {

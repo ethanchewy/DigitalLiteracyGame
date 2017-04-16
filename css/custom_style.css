@@ -1,26 +1,8 @@
-
-p{
-    padding-left: 2%;
-    padding-right: 2%;
-}
-
-.f{
-    width: 95%;
-}
-
-#console{
-    left: 0;
-    top: 0;
-    list-style: none;
-    position: fixed;
-    padding: 2%;
-}
-
 .question {
     text-align: center;
     line-height: 200%;
     margin-top: 2%;
-  padding: 2%;
+	padding: 2%;
 }
 
 
@@ -63,3 +45,14 @@ p{
 .cr, .cs, .ct{
         width: 110%;
 }
+
+/*
+div[role=article]:first-child{
+	color:green;
+}
+div[role=article]:second-child{
+	color:green;
+}
+*/
+
+
