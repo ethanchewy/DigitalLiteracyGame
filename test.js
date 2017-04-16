@@ -316,14 +316,14 @@ $(document).on('click', '.submit', function() {
 	//e.preventDefault();
 	var number =$(this).parent().attr('id');
 	var correct =$(this).parent().attr('class').toLowerCase();
+	//var choice = $('#' + number + ' input[name=choice]:checked').val();
+	//http://stackoverflow.com/a/588322/4698963
 	correct = correct.split(" ");
 	console.log(correct);
 	correct = correct.splice(0, 2);
 	console.log(correct);
 	correct = correct.join(" ");
 	console.log(correct);
-	//var choice = $('#' + number + ' input[name=choice]:checked').val();
-	//http://stackoverflow.com/a/588322/4698963
 	var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
 
 	console.log(choice);
