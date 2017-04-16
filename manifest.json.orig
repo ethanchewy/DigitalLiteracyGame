@@ -1,0 +1,24 @@
+{
+  "name": "Digital Literacy",
+  "version": "1.0.3",
+  "manifest_version": 2,
+  "description": "Visualize the political leaning of your Facebook friends.",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "icons":{
+      "128":"icon128t.png"
+  },
+  "content_scripts": [
+    {
+      "js": ["all.js","sdk.js","jquery-3.1.1.min.js","screentime.js","test.js"],
+      "matches": [ "*://*.facebook.com/*", "*://*.mbasic.facebook.com/*" ] ,
+      "css": ["css/custom_style.css"]    
+    }
+  ],
+  "permissions": ["tabs", "https://*/*", "storage", "unlimitedStorage"]
+<<<<<<< HEAD
+}
+=======
+}
+>>>>>>> design
