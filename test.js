@@ -175,7 +175,6 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 									parent_div.text("Who Is This?");
 								}
 							}
-						}
 
 							if(game_choice[0]=="open"){
 								$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
@@ -224,39 +223,6 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							g++;
 
 						}
-
-						
-						
-						
-
-						
-
-						//Insert friend randomly into the array http://stackoverflow.com/a/1527820/4698963
-						/*
-						var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
-
-						friends.splice(location, 0, name);
-
-						$(this).append('<div id='+g+" class=" + "\"" + name + " question"+"\""+">"+ 
-							'Question '
-						 + g +
-						 "<form" + " id="+g+" >" + "Guess: " +"<input type=\"text\" name=\"choice\">"+
-						 "</form>" +
-						 "<button class=\"submit\">"+ "Submit" +"</button>" 
-						 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
-						 '</div>'+"<br>"
-
-						 );
-
-						$("body").find("#console:first").append(
-							"<li data-time=\"0\" data-field=\"" + g + "\">Question " + g +": <span>0</span>s</li>"
-
-							);
-
-
-
-
-						*/
 
 						//Block out profile photo + hovering function
 						//Replace hoverin over with question or somethin
@@ -372,7 +338,8 @@ $(document).on('click', '.submit', function() {
 			var correct_time = times_on_posts[number];
 			alert("Correct! Time spent: "+ correct_time + " seconds");
 		} else if(choice!==correct){
-			alert("Incorect!");
+			var correct_time = times_on_posts[number];
+			alert("Incorect! Time spent: "+ correct_time + " seconds");
 		}
 	} else if(game_choice=="open"){
 		var choice = $('#' + number + ' input[name=choice]').val().toLowerCase();
@@ -382,7 +349,8 @@ $(document).on('click', '.submit', function() {
 				var correct_time = times_on_posts[number];
 				alert("Correct! Time spent: "+ correct_time + " seconds");
 			} else if(choice!==correct){
-				alert("Incorect!");
+				var correct_time = times_on_posts[number];
+				alert("Incorect! Time spent: "+ correct_time + " seconds");
 			}
 
 		}
