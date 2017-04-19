@@ -378,7 +378,7 @@ $( document ).ready(function() {
 	//getFriends();
 	var $div = $('<div style=\"display: none\" id=\"hideAll\">\ <div id="load">\       <h1>Digital Literacy Game</h1>\
         <h2>DAV Lab</h2>\<div id="ringdiv">\
-        <img id="ring" src="https://lh5.googleusercontent.com/E2yu2kW9oUOSTNAGBq__SentduisaL8QP0gu6OJy03Iw5wLmsz61xu8sVe5-4RxjjEYk26-V17OMO7k=w1037-h632">\
+        <img id="ring" src="http://www.drivethrurpg.com/shared_images/ajax-loader.gif">\
         </div>\</div>\</div>').appendTo('body');
 
 	$("<div id=\"console\"></div>").appendTo(".g:first");
