@@ -166,13 +166,13 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 							
 							console.log(parent_div);
 //							parent_div.css('background-color', 'red');
-							
+							parent_div.css('background-color', 'red');
 							if ((m = re.exec(str)) !== null) {
 								if(rest.length>2){
 									rest.splice(0, 2);
-									parent_div.text("Question " + g + " : Who Is This? " + rest.join(" "));
+									parent_div.text("Who Is This? " + rest.join(" "));
 								} else{
-									parent_div.text("Question " + g + " : Who Is This?");
+									parent_div.text("Who Is This?");
 								}
 							}
 
@@ -194,8 +194,8 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 								);
 							} else {
-								var friends = getRandomSubarray(list_of_friends[0], 3);
-								var location = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+								var friends = getRandomSubarray(list_of_friends[0], 4);
+								var location = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
 
 								friends.splice(location, 0, name);
 
@@ -206,6 +206,7 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 								 + "<input type=\"radio\" name=\"choice\" value=\"" + friends[1] +"\""+">"+ friends[1] + 
 								 "<input type=\"radio\" name=\"choice\" value=\"" + friends[2] +"\""+">"+ friends[2] + 
 								 "<input type=\"radio\" name=\"choice\" value=\"" + friends[3] +"\""+">"+ friends[3] + 
+								 "<input type=\"radio\" name=\"choice\" value=\"" + friends[4] +"\""+">"+ friends[4] +
 								 "</form>" +
 								  "<button class=\"submit\">"+ "Submit" +"</button>" 
 								 + "<button class=\"reveal\">"+ "Reveal Correct Answer" +"</button>" +
