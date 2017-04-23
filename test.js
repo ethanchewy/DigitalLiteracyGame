@@ -154,11 +154,11 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 						//console.log(name);
 						//console.log(list_of_friends);
-						console.log(list_of_friends instanceof Array);
-						console.log(list_of_friends[0]);
+						//console.log(list_of_friends instanceof Array);
+						//console.log(list_of_friends[0]);
 						//console.log(list_of_friends["friends_list"]);
-						console.log(name);
-						console.log(list_of_friends[0].indexOf(name));
+						//console.log(name);
+						//console.log(list_of_friends[0].indexOf(name));
 
 						if(list_of_friends[0].indexOf(name)>-1&&shared>-1){
 							//ReProgram with a yield statement or a test fail loop
@@ -296,6 +296,9 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 	
 }
+//Notes 3/19/17
+//Number of tries
+//See if user likes the post
 
 //Click event to check if the answer is correct
 //http://stackoverflow.com/a/6658774/4698963
