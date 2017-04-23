@@ -142,11 +142,14 @@ function getNewsFeedFrequency(maxDepth, done, onFetch) {
 
 						//parent_class = $(this).find("span:first");
 						var parent_div = $(this).find("a:first");
-
+						console.log("parent_div "+ parent_div);
 						var re = /^([a-z]+)[\s,;:]+([a-z]+)/i; 
+						console.log("re "+ re);
 						var str = parent_div.text();
+						console.log("str "+ str);
 						var m;
 						var rest = str.split(" ");
+						console.log("rest "+ rest);
 
 
 						var name = rest.slice(0, 2);
@@ -379,6 +382,7 @@ $(document).on('click', '.reveal', function() {
 $( document ).ready(function() {
 	//getFriends();
 	//getFriends();
+	
 	var $div = $('<div style=\"display: none\" id=\"hideAll\">\ <div id="load">\       <h1>Digital Literacy Game</h1>\
         <h2>DAV Lab</h2>\<div id="ringdiv">\
         <img id="ring" src="http://www.drivethrurpg.com/shared_images/ajax-loader.gif">\

@@ -49,7 +49,7 @@ function getFriends(){
 			               index = name.indexOf(firstDigit);
 			               name = name.slice(0, index);
 
-			               if(name.includes("Your PagesHelpSettings") || name.includes("Create")){
+			               if(name.includes("Your PagesHelpSettings") || name.includes("PagesHelpSettings")){
 			               		return false;
 			               }
 			               // Do something here
