@@ -23,6 +23,24 @@ if(list_of_friends===null){
 	alert("Please press the update button in the extension popup window!");
 }
 */
+function grabFriendsList(){
+	chrome.storage.local.get(['friends_list','game_choice'], function(items) {
+  //message('Settings retrieved', items);
+	  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
+	  console.log(list_of_friends);
+	  game_choice = items['game_choice'];
+	  console.log(game_choice);
+	});
+
+	//Need to wait till chrome.storage.local.get finishes getting option.
+}
+
+function grabFriendsListCallback(_callback){
+	console.log("hello sdfsdfsdfd");
+	grabFriendsList();
+	console.log("hello 123");
+	_callback();
+}
 
 function get(url, done) {
 	var xhr = new XMLHttpRequest();
@@ -364,23 +382,9 @@ $(document).on('click', '.reveal', function() {
 	alert("The person who shared/posted this is " + correct);
 });
 
-
-
 $( document ).ready(function() {
 	//getFriends();
 	//getFriends();
-	chrome.storage.local.get(['friends_list'], function(items) {
-  //message('Settings retrieved', items);
-  
-	  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
-	  console.log(list_of_friends);
-	});
-
-	chrome.storage.local.get(['game_choice'], function(items) {
-	  //message('Settings retrieved', items);
-	  game_choice = Object.keys(items).map(function (key) { return items[key]; });
-	  console.log(game_choice);
-	});
 
 	var $div = $('<div style=\"display: none\" id=\"hideAll\">\ <div id="load">\       <h1>Digital Literacy Game</h1>\
         <h2>DAV Lab</h2>\<div id="ringdiv">\
@@ -388,123 +392,142 @@ $( document ).ready(function() {
         </div>\</div>\</div>').appendTo('body');
 
 	$("<div id=\"console\"></div>").appendTo(".g:first");
+
+	document.getElementById("hideAll").style.display = "block";
+
+	console.log("test");
+	//console.log(friends_list);
+	chrome.storage.local.get(['friends_list','game_choice'], function(items) {
+  //message('Settings retrieved', items);
+	  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
+	  console.log(list_of_friends);
+	  game_choice = items['game_choice'];
+	  console.log(game_choice);
+
+	  //TEMPORARILY. NEED TO TIDY UP SOON.
+
+		var maxNewsFeedDepth = 20;
+		var profileToFrequency;
+		//document.body.append("<div>sdfsdfsdfdf</div>");
+		//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
+
+
+		getNewsFeedFrequency(maxNewsFeedDepth, function (data, progress) {
+			//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
+			//chrome.extension.getBackgroundPage().console.log(data);
+			document.getElementById("hideAll").style.display = "none";
+			$.screentime({
+			  fields: [
+			    { selector: '#1',
+			      name: '1'
+			    },
+			    { selector: '#2',
+			      name: '2'
+			    },
+			    { selector: '#3',
+			      name: '3'
+			    },
+			    { selector: '#4',
+			      name: '4'
+			    },
+			    { selector: '#5',
+			      name: '5'
+			    },
+			    { selector: '#6',
+			      name: '6'
+			    },
+			    { selector: '#7',
+			      name: '7'
+			    },
+			    { selector: '#8',
+			      name: '8'
+			    },
+			    { selector: '#9',
+			      name: '9'
+			    },
+			    { selector: '#10',
+			      name: '10'
+			    },
+			    { selector: '#11',
+			      name: '11'
+			    },
+			    { selector: '#12',
+			      name: '12'
+			    },
+			    { selector: '#13',
+			      name: '13'
+			    },
+			    { selector: '#14',
+			      name: '14'
+			    },
+			    { selector: '#15',
+			      name: '15'
+			    },
+			    { selector: '#16',
+			      name: '16'
+			    },
+			    { selector: '#17',
+			      name: '17'
+			    },
+			    { selector: '#18',
+			      name: '18'
+			    },
+			    { selector: '#19',
+			      name: '19'
+			    },
+			    { selector: '#20',
+			      name: '20'
+			    },
+			    
+			  ],
+			  reportInterval:1,
+			  callback: function(data) {
+			    // Example { Top: 5, Middle: 3 }
+			    $.each(data, function(key, val) {
+			      var $elem = $('#console li[data-field="' + key + '"]');
+			      var current = parseInt($elem.data('time'), 10);
+			      times_on_posts[key] = current + val;
+			      $elem.data('time', current + val);
+			      $elem.find('span').html(current += val);
+			    });
+
+			  }
+			});
+			chrome.runtime.sendMessage({
+				action: "parseResponse",
+				data: data,
+				tab: sender.tab.id
+			});
+			
+			//profileToFrequency = data;
+			//onReturn();
+		},  function (elapsed, total) {
+			//console.log('Progress: ' + elapsed + '/' + total);
+			//Timing function for each question
+			//Need to make scalable => push to array everytime question is created
+			//This is just for temprorary reasons
+			//Take information from callback
+			
+			chrome.runtime.sendMessage({
+				action: "parseProgress",
+				data: {
+					elapsed: elapsed,
+					total: total,
+				},
+			});
+		});
+		//console.log("hji");
+
+
+	});
+
+		
 	/*
 	document.getElementsByTagName('body')[0].append(
 		"<div style=\"display: none\" id=\"hideAll\">&nbsp;</div>"
 		);
 		*/
-	document.getElementById("hideAll").style.display = "block";
-	var maxNewsFeedDepth = 20;
-	var profileToFrequency;
-	//document.body.append("<div>sdfsdfsdfdf</div>");
-	//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
-
-
-	getNewsFeedFrequency(maxNewsFeedDepth, function (data, progress) {
-		//chrome.extension.getBackgroundPage().console.log("sdfsdfsfdsdf");
-		//chrome.extension.getBackgroundPage().console.log(data);
-		document.getElementById("hideAll").style.display = "none";
-		$.screentime({
-		  fields: [
-		    { selector: '#1',
-		      name: '1'
-		    },
-		    { selector: '#2',
-		      name: '2'
-		    },
-		    { selector: '#3',
-		      name: '3'
-		    },
-		    { selector: '#4',
-		      name: '4'
-		    },
-		    { selector: '#5',
-		      name: '5'
-		    },
-		    { selector: '#6',
-		      name: '6'
-		    },
-		    { selector: '#7',
-		      name: '7'
-		    },
-		    { selector: '#8',
-		      name: '8'
-		    },
-		    { selector: '#9',
-		      name: '9'
-		    },
-		    { selector: '#10',
-		      name: '10'
-		    },
-		    { selector: '#11',
-		      name: '11'
-		    },
-		    { selector: '#12',
-		      name: '12'
-		    },
-		    { selector: '#13',
-		      name: '13'
-		    },
-		    { selector: '#14',
-		      name: '14'
-		    },
-		    { selector: '#15',
-		      name: '15'
-		    },
-		    { selector: '#16',
-		      name: '16'
-		    },
-		    { selector: '#17',
-		      name: '17'
-		    },
-		    { selector: '#18',
-		      name: '18'
-		    },
-		    { selector: '#19',
-		      name: '19'
-		    },
-		    { selector: '#20',
-		      name: '20'
-		    },
-		    
-		  ],
-		  reportInterval:1,
-		  callback: function(data) {
-		    // Example { Top: 5, Middle: 3 }
-		    $.each(data, function(key, val) {
-		      var $elem = $('#console li[data-field="' + key + '"]');
-		      var current = parseInt($elem.data('time'), 10);
-		      times_on_posts[key] = current + val;
-		      $elem.data('time', current + val);
-		      $elem.find('span').html(current += val);
-		    });
-
-		  }
-		});
-		chrome.runtime.sendMessage({
-			action: "parseResponse",
-			data: data,
-			tab: sender.tab.id
-		});
-		
-		//profileToFrequency = data;
-		//onReturn();
-	},  function (elapsed, total) {
-		//console.log('Progress: ' + elapsed + '/' + total);
-		//Timing function for each question
-		//Need to make scalable => push to array everytime question is created
-		//This is just for temprorary reasons
-		//Take information from callback
-		
-		chrome.runtime.sendMessage({
-			action: "parseProgress",
-			data: {
-				elapsed: elapsed,
-				total: total,
-			},
-		});
-	});
-	//console.log("hji");
+	
 	
 	
 
