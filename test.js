@@ -18,19 +18,6 @@ console.log(list_of_friends);
 var list_of_friends = null;
 var game_choice = null;
 
-chrome.storage.local.get(['friends_list'], function(items) {
-  //message('Settings retrieved', items);
-  
-  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
-  console.log(list_of_friends);
-});
-
-chrome.storage.local.get(['game_choice'], function(items) {
-  //message('Settings retrieved', items);
-  game_choice = Object.keys(items).map(function (key) { return items[key]; });
-  console.log(game_choice);
-});
-
 /*
 if(list_of_friends===null){
 	alert("Please press the update button in the extension popup window!");
@@ -382,7 +369,19 @@ $(document).on('click', '.reveal', function() {
 $( document ).ready(function() {
 	//getFriends();
 	//getFriends();
-	
+	chrome.storage.local.get(['friends_list'], function(items) {
+  //message('Settings retrieved', items);
+  
+	  list_of_friends = Object.keys(items).map(function (key) { return items[key]; });
+	  console.log(list_of_friends);
+	});
+
+	chrome.storage.local.get(['game_choice'], function(items) {
+	  //message('Settings retrieved', items);
+	  game_choice = Object.keys(items).map(function (key) { return items[key]; });
+	  console.log(game_choice);
+	});
+
 	var $div = $('<div style=\"display: none\" id=\"hideAll\">\ <div id="load">\       <h1>Digital Literacy Game</h1>\
         <h2>DAV Lab</h2>\<div id="ringdiv">\
         <img id="ring" src="http://www.drivethrurpg.com/shared_images/ajax-loader.gif">\
